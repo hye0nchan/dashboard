@@ -43,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
       slivers: <Widget>[
         _buildHeader(screenHeight),
         _buildPreventionTips(screenHeight),
+        _buildYourOwnTest(screenHeight),
       ],
       ),
     );
@@ -93,8 +94,13 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-                padding: const EdgeInsets.all(30.0),
+                padding: const EdgeInsets.all(20.0),
                 child: SfRadialGauge(
+                  title: GaugeTitle(
+                      text: "Temperature Gauge",
+                    textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
+
+                  ),
                   enableLoadingAnimation: true,
                   animationDuration: 1000,
                   axes: <RadialAxis>[
@@ -119,16 +125,72 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
             ),
-            SfCartesianChart(series: <ChartSeries>[
-              LineSeries<SalesData,double>
-                (dataSource: _chartData,
-                  xValueMapper: (SalesData sales, _)=>sales.hour,
-                  yValueMapper: (SalesData sales, _)=>sales.tem)
-            ],
+            Container(
+              padding: const EdgeInsets.all(20.0),
+              child: SfCartesianChart(
+                title: ChartTitle(
+                  text:"Temperature Chart",
+                  textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
+                ),
+                legend: Legend(isVisible: true,
+                  position: LegendPosition.bottom,),
+                series: <ChartSeries>[
+                  LineSeries<SalesData,double>
+                    (
+                      name: "Temperature",
+                      dataSource: _chartData,
+                      xValueMapper: (SalesData sales, _)=>sales.hour,
+                      yValueMapper: (SalesData sales, _)=>sales.tem,
+                      dataLabelSettings: DataLabelSettings(isVisible: true))
+                ],
+                primaryXAxis: NumericAxis(edgeLabelPlacement: EdgeLabelPlacement.shift),
+              ),
             ),
           ],
         ),
       ),
     );
   }
+  SliverToBoxAdapter _buildYourOwnTest(double screenHeight) {
+    return SliverToBoxAdapter(
+      child: Container(
+        margin: const EdgeInsets.symmetric(
+          horizontal: 20.0,
+            vertical : 10.0,
+        ),
+        padding: const EdgeInsets.all(10.0),
+        height: screenHeight *0.12,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFAD9FE4), Palette.primaryColor],
+          ),
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("INFO",
+                  style: const TextStyle(
+                      color: Colors.white,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold),),
+                Text("Displays temperature data \n received from the sensor",
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold),
+                maxLines: 2,)
+              ],
+            ),
+
+          ],
+        ),
+      ),
+    );
+  }
+
 }
