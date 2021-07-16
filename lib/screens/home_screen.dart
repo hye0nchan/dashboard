@@ -125,27 +125,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
             ),
-            Container(
-              padding: const EdgeInsets.all(20.0),
-              child: SfCartesianChart(
-                title: ChartTitle(
-                  text:"Temperature Chart",
-                  textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
-                ),
-                legend: Legend(isVisible: true,
-                  position: LegendPosition.bottom,),
-                series: <ChartSeries>[
-                  LineSeries<SalesData,double>
-                    (
-                      name: "Temperature",
-                      dataSource: _chartData,
-                      xValueMapper: (SalesData sales, _)=>sales.hour,
-                      yValueMapper: (SalesData sales, _)=>sales.tem,
-                      dataLabelSettings: DataLabelSettings(isVisible: true))
-                ],
-                primaryXAxis: NumericAxis(edgeLabelPlacement: EdgeLabelPlacement.shift),
-              ),
-            ),
           ],
         ),
       ),
